@@ -1,8 +1,23 @@
 #include <stdio.h>
 
+#define MAX_VEICULOS 10
+
+struct Veiculo{
+    int id;
+    char placa[8];
+    char modelo[30];
+    float consumoKmL; //Consumo em quilometros por Litros
+    float capacidadeCarga;
+    int status;
+
+};
+
+
 int main() {
 
     int opcao;
+    struct Veiculo frota[MAX_VEICULOS];
+    int totalVeiculos = 0; //contador
 
     do {
 
@@ -21,8 +36,38 @@ int main() {
    
      switch (opcao) {
         case 1:
-        printf("\nCadastro do veiculo\n");
+       printf("\n==Cadastrar do veiculo==\n\n");
+
+        printf("Id: ");
+        scanf("%d",&frota[totalVeiculos].id);
+
+        printf("Placa: ");
+        scanf("%7s",frota[totalVeiculos].placa);
+        
+        printf("Modelo: ");
+        scanf(" %29[^\n]",frota[totalVeiculos].modelo);
+
+        printf("Consumo de Km/l: ");
+        scanf("%f",&frota[totalVeiculos].consumoKmL);           
+        
+        printf("Capacidade de carga (T): ");
+        scanf("%f",&frota[totalVeiculos].capacidadeCarga);
+
+        printf("Status (0 = Disponivel, 1 = em viagem, 2 = Em manutencao): ");
+        scanf("%d",&frota[totalVeiculos].status);
+
+        printf("\nCadastro: %d | %s | %s | %.1f | %.1f T(toneladas) | status %d\n",
+                frota[totalVeiculos].id,
+                frota[totalVeiculos].placa,
+                frota[totalVeiculos].modelo,
+                frota[totalVeiculos].consumoKmL,
+                frota[totalVeiculos].capacidadeCarga,
+                frota[totalVeiculos].status);
+
+            totalVeiculos++;
+            printf("\nTotal de veiculos cadastrados:%d \n\n",totalVeiculos);
         break;
+        
         case 2: 
         printf("\nListar veiculo\n");
         break;
