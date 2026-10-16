@@ -1,8 +1,10 @@
 #include <stdio.h>
 
 #define MAX_VEICULOS 10
+#define NUM_CIDADES 5
+#define PRECO_COMBUSTIVEL 5.80
 
-struct Veiculo{
+struct Veiculo {
     int id;
     char placa[8];
     char modelo[30];
@@ -12,14 +14,45 @@ struct Veiculo{
 
 };
 
+struct Viagem {
+    int idVeiculo;
+    int cidadeOrigem;
+    int cidadeDestino;
+    float distanciaTotal;
+    float consumoEstimadoLitros;
+    float custoEstimado;
+};
+
+//uso basico do ponteiro
+const char *NOME_CIDADES[NUM_CIDADES] ={
+    "0: Central",
+    "1: Norte",
+    "2: SUl",
+    "3: Leste",
+    "4: Oeste",
+};
+
+
+int distancias[NUM_CIDADES][NUM_CIDADES] = {
+    {  0,  45,  60,  30,  80 },
+    { 45,   0,  -1,  25, 110 },
+    { 60,  -1,   0,  70,  40 },
+    { 30,  25,  70,   0,  -1 },
+    { 80, 110,  40,  -1,   0 }
+}; //Obs: Por causa dessa parte do codigo ao colar do PDF acaba aparecendo sinal de que ha varias falhas no programa.
 
 int main() {
 
     int opcao;
     struct Veiculo frota[MAX_VEICULOS];
-      int totalVeiculos = 0;
+    int totalVeiculos = 0;
     int i;
     int existe;
+    int j;
+    int sub, origem, destino, novaDist;
+    int idBusca, pos, confirma;
+    struct Viagem viagem;
+
 
     do 
     {
