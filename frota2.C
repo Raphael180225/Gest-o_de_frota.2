@@ -24,10 +24,10 @@ struct Viagem {
 };
 
 //uso basico do ponteiro
-const char *NOME_CIDADES[NUM_CIDADES] ={
+const char *NOME_CIDADES[NUM_CIDADES] = {
     "0: Central",
     "1: Norte",
-    "2: SUl",
+    "2: Sul",
     "3: Leste",
     "4: Oeste",
 };
@@ -39,7 +39,7 @@ int distancias[NUM_CIDADES][NUM_CIDADES] = {
     { 60,  -1,   0,  70,  40 },
     { 30,  25,  70,   0,  -1 },
     { 80, 110,  40,  -1,   0 }
-}; //Obs: Por causa dessa parte do codigo ao colar do PDF acaba aparecendo sinal de que ha varias falhas no programa.
+}; 
 
 int main() {
 
@@ -182,8 +182,62 @@ int main() {
         break;
 
         case 3:
-        printf("\n==Consultar matriz de distancia==\n");
+        printf("\n==Consultar matriz de distancia==\n\n");
+
+            printf("%-12s", "");
+            for(j = 0; j < NUM_CIDADES; j++) {
+                printf("%-12s",NOME_CIDADES[j]);
+            }
+            printf("\n");
+             
+            for(i = 0; i < NUM_CIDADES; i++){
+                printf("%-12s", NOME_CIDADES[i]);
+                for(j = 0; j < NUM_CIDADES; j++){
+                    printf("%-12d",distancias[i][j]);
+                }
+                printf("\n");
+            }
+            printf("\n(0 = mesma cidade, -1 sem rota direta)\n");
+
+            printf("\n 1 - Alterar uma distancia\n 0 - Voltar ao menu\n");
+            printf("Qual desejas: ");
+            scanf("%d", &sub);
+
+            if (sub == 1){
+                do {
+                    printf("Cidade A (0 a %d): ",NUM_CIDADES - 1);
+                    scanf("%d",&origem);
+
+                    if (origem < 0 || origem >= NUM_CIDADES) {
+                        printf("Numero invalido. Use numero de 0 a %d.\n",NUM_CIDADES - 1);
+                    }
+                } while (origem < 0 || origem >= NUM_CIDADES);
+
+                do{
+                    printf("Cidade B (0 a %d): ",NUM_CIDADES - 1);
+                    scanf("%d",&destino);
+
+                    if(destino < 0 || destino >= NUM_CIDADES || destino == origem){
+                        printf("Numero invalido. Use 0 a %d e diferente da cidade A (ponto de partida).\n",NUM_CIDADES - 1);
+                    }
+                } while(destino < 0 || destino >= NUM_CIDADES || destino == origem);
+
+                do{
+                    printf("Nova distancia em KM (Maior que 0, ou -1 se nao houver rota).\n");
+                    scanf("%d",&novaDist);
+
+                    if(novaDist == 0 || novaDist < -1){
+                        printf("Numero invalido. Digite um numero maior que 0 ou -1.\n");
+                    }
+                } while(novaDist == 0 || novaDist < -1);
+
+                distancias[origem][destino] = novaDist;
+                distancias[destino][origem] = novaDist;
+                printf("\nDistancia atualizada nos dois sentidos!\n\n");
+            }
+
         break;
+
         case 4:
         printf("\n==Simular viagem==\n");
         break;
