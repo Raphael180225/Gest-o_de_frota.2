@@ -42,7 +42,6 @@ int distancias[NUM_CIDADES][NUM_CIDADES] = {
 }; 
 
 int main() {
-
     int opcao;
     struct Veiculo frota[MAX_VEICULOS];
     int totalVeiculos = 0;
@@ -52,6 +51,10 @@ int main() {
     int sub, origem, destino, novaDist;
     int idBusca, pos, confirma;
     struct Viagem viagem;
+    int melhor;
+    int qtdDisp, qtdViagem, qtdManut;
+    float somaCarga, mediaCarga;
+
 
 
     do 
@@ -316,10 +319,54 @@ int main() {
 
         case 5:
         printf("\n==Relatorio de desempenho==\n\n");
+
+        if(totalVeiculos == 0){
+            printf("Nao ha nenhum veiculo cadastrado ate o momento");
+            break;
+        }
+
+        melhor = 0;
+        qtdDisp = 0;
+        qtdManut = 0;
+        qtdViagem = 0;
+        somaCarga = 0;
+
+        for(i = 0; i < totalVeiculos; i++){
+            if(frota[i].consumoKmL > frota[melhor].consumoKmL){
+                melhor = i;
+            }
+
+            if(frota[i].status == 0){
+                qtdDisp++;
+            } else if(frota[i].status == 1){
+                qtdViagem++;
+            } else {
+                qtdManut++;
+            }
+
+            somaCarga = somaCarga + frota[i].capacidadeCarga;
+            
+        }
+
+            mediaCarga = somaCarga / totalVeiculos;
+
+            printf("Veiculo mais eficiente: %s - %s (%.1f km/l)\n",
+                frota[melhor].placa,
+                frota[melhor].modelo,
+                frota[melhor].consumoKmL);
+
+            printf("\n---Veiculos por Status---\n\n");
+            printf("Disponiveis ----> %d (%.1f%%)\n",qtdDisp,qtdDisp * 100.0 / totalVeiculos);
+            printf("Em viagem ------> %d (%.1f%%)\n",qtdViagem,qtdViagem * 100.0 / totalVeiculos);
+            printf("Em manutencao --> %d (%.1f%%)\n",qtdManut,qtdManut * 100.0 / totalVeiculos);
+
+            printf("\nMedia de capacidade de carga: %.1f T(toneladas).\n\n",mediaCarga);
         break;
+
         case 6:
         printf("\nAte logo!\n\n");
         break;
+
         default:
         printf("\nopcao invalida, digite um numero de 1 a 6\n");
         }
