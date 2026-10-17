@@ -147,7 +147,7 @@ int main() {
                    frota[totalVeiculos].status);
 
             totalVeiculos++;
-            printf("\nTotal de veiculos cadastrados:%d \n\n",totalVeiculos);
+            printf("\nTotal de veiculos cadastrados: %d \n\n",totalVeiculos);
         break;
 
         case 2: 
@@ -223,7 +223,7 @@ int main() {
                 } while(destino < 0 || destino >= NUM_CIDADES || destino == origem);
 
                 do{
-                    printf("Nova distancia em KM (Maior que 0, ou -1 se nao houver rota).\n");
+                    printf("Nova distancia em KM (Maior que 0, ou -1 se nao houver rota): ");
                     scanf("%d",&novaDist);
 
                     if(novaDist == 0 || novaDist < -1){
@@ -240,7 +240,80 @@ int main() {
 
         case 4:
         printf("\n==Simular viagem==\n");
+
+        if(totalVeiculos == 0){
+            printf("Cadastre um veiculo antes de simular uma viagem.\n\n");
+            break;
+        }
+
+        printf("ID do veiculo: ");
+        scanf("%d",&idBusca);
+
+        pos = -1;
+        for(i = 0;i < totalVeiculos; i++){
+            if (frota[i].id == idBusca){
+                pos = i;
+            }
+        }
+        
+        if (pos == -1){
+            printf("Veiculo nao encontrado.\n\n");
+            break;
+        }
+
+        if(frota[pos].status != 0){
+            printf("Esse veiculo nao esta disponivel.\n\n");
+            break;
+        }
+        
+        do{
+            printf("Cidade de origem (0 a %d): ", NUM_CIDADES - 1);
+            scanf("%d",&origem);
+
+            if(origem < 0 || origem >= NUM_CIDADES){
+                printf("Invalido,use um numero de 0 a %d.\n",NUM_CIDADES - 1);
+            }
+        } while(origem < 0 || origem >= NUM_CIDADES);
+
+        do{
+            printf("Cidade de destino (0 a %d): ",NUM_CIDADES - 1);
+            scanf("%d",&destino);
+
+            if(destino < 0 || destino >= NUM_CIDADES){
+                printf("Invalido,use um numero de 0 a %d.\n",NUM_CIDADES - 1);
+            }
+        } while(destino < 0 || destino >= NUM_CIDADES);
+
+        if (distancias[origem][destino] <= 0) {
+            printf("Nao ha rota valida.\n\n");
+            break;
+        }
+
+        viagem.idVeiculo = idBusca;
+        viagem.cidadeOrigem = origem;
+        viagem.cidadeDestino = destino;
+        viagem.distanciaTotal = distancias[origem][destino];
+        viagem.consumoEstimadoLitros = viagem.distanciaTotal / frota[pos].consumoKmL;
+        viagem.custoEstimado = viagem.consumoEstimadoLitros * PRECO_COMBUSTIVEL;
+
+        printf("\n----Resumo viagem----\n");
+        printf("Rota: %s -> %s\n",NOME_CIDADES[origem], NOME_CIDADES[destino]);
+        printf("Distancia: %.1f Km\n",viagem.distanciaTotal);
+        printf("Consumo estimado: %.2f litros\n", viagem.consumoEstimadoLitros);
+        printf("Custo estimado: R$ %.2f\n",viagem.custoEstimado);
+
+        printf("Confirmar viagem? (1 = sim, 0 = nao): ");
+        scanf("%d",&confirma);
+
+        if(confirma == 1){
+            frota[pos].status = 1;
+            printf("\nViagem confirmada.O Veiculo agora esta em viagem. =)\n\n");
+        } else {
+            printf("Viagem cancelada. =(\n\n");
+        }
+
         break;
+
         case 5:
         printf("\n==Relatorio de desempenho==\n\n");
         break;
